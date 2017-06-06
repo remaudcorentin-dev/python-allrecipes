@@ -42,10 +42,9 @@ detailed_recipe = AllRecipes.get(main_recipe_url)
 - steps: string list of each step of the recipe  
 
 ### OnGoing features :  
-- Multiple returned images for the recipe  
-- Preparation, Cooking time, Total Time, etc data  
+- Preparation time, Cooking time, Total time, etc  
 - Multiple images returned for the search / get requests  
 - Limit the number of returned query on search  
-
+- More returned data & query options
 
 ###### Support / Contact : remaudcorentin.dev@gmail.com
