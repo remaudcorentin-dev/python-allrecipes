@@ -11,6 +11,9 @@ class AllRecipes(object):
 
 	@staticmethod
 	def search(query_dict):
+		"""
+		Search recipes parsing the returned html data.
+		"""
 		base_url = "https://allrecipes.com/search/results/?"
 		query_url = urllib.parse.urlencode(query_dict)
 
@@ -30,9 +33,11 @@ class AllRecipes(object):
 				data["name"] = article.find("h3", {"class": "grid-col__h3 grid-col__h3--recipe-grid"}).get_text()
 				data["description"] = article.find("div", {"class": "rec-card__description"}).get_text()
 				data["url"] = article.find("a", href=re.compile('^/recipe/'))['href']
-				data["image"] = article.find("img", {"class": "grid-col__rec-image"})["src"]
-			except Exception as e:
-				print("Except :", e)
+				try:
+					data["image"] = article.find("img", {"class": "grid-col__rec-image"})["src"]
+				except Exception as e1:
+					pass
+			except Exception as e2:
 				pass
 			search_data.append(data)
 
