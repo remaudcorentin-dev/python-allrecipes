@@ -4,9 +4,9 @@
 Python API to search &amp; get recipes from the 'allrecipes.com' website (web crawler, unofficial)  
 Useful, efficient and super simple to use.  
 
-### Requirements :  
-python >= 3.4  
-beautifulsoup4 >= 4.6  
+### Requirements :
+`python >= 3.4`  
+`beautifulsoup4 >= 4.6`  
 
 ### Usage :
 
