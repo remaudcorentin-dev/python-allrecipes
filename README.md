@@ -38,7 +38,7 @@ detailed_recipe = AllRecipes.get(main_recipe_url)
 - img: if exists, image of the recipe.  
 
 ##### AllRecipes.get return a dictionary like :  
-- ingredients: string list of the recipe ingredients (including quantites)  
+- ingredients: string list of the recipe ingredients (including quantities)  
 - steps: string list of each step of the recipe  
 
 ### OnGoing features :  
