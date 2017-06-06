@@ -1,2 +1,2 @@
 # python-allrecipes
-Python API to search &amp; get recipes from the 'allrecipes.com' website (webscroller)
+Python API to search &amp; get recipes from the 'allrecipes.com' website (web crawler)
