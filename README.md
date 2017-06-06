@@ -13,7 +13,7 @@ query_options = {
   "wt": "pork curry"        # Query keywords
   "ingIncl": "olives"       # 'Must be included' ingrdients (optional)
   "ingExcl" "onions salad"  # 'Must not be included' ingredients (optional)
-  "sort": "re"              # Sorting options : 're' for relevance, 'ra' for rating, 'p for popular (optional)
+  "sort": "re"              # Sorting options : 're' for relevance, 'ra' for rating, 'p' for popular (optional)
 }
 query_result = AllRecipies.search(query_options)
 
