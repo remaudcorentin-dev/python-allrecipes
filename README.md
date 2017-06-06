@@ -1,8 +1,8 @@
 # python-allrecipes
 ##### v0.1.2
 
-Python API to search &amp; get recipes from the 'allrecipes.com' website (web crawler)
-Useful, efficient and super simple to use.
+Python API to search &amp; get recipes from the 'allrecipes.com' website (web crawler, unofficial)  
+Useful, efficient and super simple to use.  
 
 ### Usage :
 
@@ -25,21 +25,21 @@ detailed_recipe = AllRecipes.get(main_recipe_url)
 
 ### API References
 
-##### AllRecipes.search return a list of dictionary like :
-name: name of the recipe.
-description: short description of the recipe.
-url: url of the detailed recipe on 'allrecipes.com'.
-img: if exists, image of the recipe.
+##### AllRecipes.search return a list of dictionary like :  
+- name: name of the recipe.  
+- description: short description of the recipe.  
+- url: url of the detailed recipe on 'allrecipes.com'.  
+- img: if exists, image of the recipe.  
 
-##### AllRecipes.get return a dictionary like :
-ingredients: string list of the recipe ingredients (including quantites)
-steps: string list of each step of the recipe
+##### AllRecipes.get return a dictionary like :  
+- ingredients: string list of the recipe ingredients (including quantites)  
+- steps: string list of each step of the recipe  
 
-### OnGoing features :
-- Multiple returned images for the recipe
-- Preparation, Cooking time, Total Time, etc data
-- Multiple images returned for the search / get requests
-- Limit the number of returned query on search
+### OnGoing features :  
+- Multiple returned images for the recipe  
+- Preparation, Cooking time, Total Time, etc data  
+- Multiple images returned for the search / get requests  
+- Limit the number of returned query on search  
 
 
 ###### Support / Contact : remaudcorentin.dev@gmail.com
