@@ -12,6 +12,8 @@ Useful, efficient and super simple to use.
 
 ```python
 
+from allrecipes import AllRecipes
+
 # Search :
 query_options = {
   "wt": "pork curry"        # Query keywords
