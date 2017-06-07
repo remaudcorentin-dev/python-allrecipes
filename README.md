@@ -18,7 +18,7 @@ Useful, efficient and super simple to use.
 - name: name of the recipe.  
 - description: short description of the recipe.  
 - url: url of the detailed recipe on 'allrecipes.com'.  
-- img: if exists, image of the recipe.  
+- image: if exists, image of the recipe.  
 
 ##### AllRecipes.get return a dictionary like :  
 - ingredients: string list of the recipe ingredients (including quantities)  
