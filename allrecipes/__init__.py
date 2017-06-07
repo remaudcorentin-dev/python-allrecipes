@@ -30,11 +30,11 @@ class AllRecipes(object):
 		for article in iterarticles:
 			data = {}
 			try:
-				data["name"] = article.find("h3", {"class": "grid-col__h3 grid-col__h3--recipe-grid"}).get_text()
+				data["name"] = article.find("h3", {"class": "grid-col__h3 grid-col__h3--recipe-grid"}).get_text().strip(' \t\n\r')
 				data["description"] = article.find("div", {"class": "rec-card__description"}).get_text()
 				data["url"] = article.find("a", href=re.compile('^/recipe/'))['href']
 				try:
-					data["image"] = article.find("img", {"class": "grid-col__rec-image"})["src"]
+					data["image"] = article.find("a", href=re.compile('^/recipe/')).find("img")["data-original-src"]
 				except Exception as e1:
 					pass
 			except Exception as e2:
