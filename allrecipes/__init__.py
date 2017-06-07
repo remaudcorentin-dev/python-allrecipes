@@ -39,7 +39,8 @@ class AllRecipes(object):
 					pass
 			except Exception as e2:
 				pass
-			search_data.append(data)
+			if data:
+				search_data.append(data)
 
 		return search_data
 
