@@ -57,7 +57,7 @@ for step in detailed_recipe['steps']:  # List of cooking steps
 ```
 
 ### OnGoing features :  
-- ~~Preparation time, Cooking time, Total time, etc~~ (available in 0.1.6)  
+- ~~Preparation time, Cooking time, Total time~~ (available in 0.1.6)  
 - Calories counter / Nutritionals apports
 - Multiple images returned for the search / get requests  
 - Limit the number of returned query on search  
