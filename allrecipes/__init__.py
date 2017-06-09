@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 
 from bs4 import BeautifulSoup
 
@@ -39,7 +40,7 @@ class AllRecipes(object):
 					pass
 			except Exception as e2:
 				pass
-			if data:
+			if data and "image" in data:  # Do not include if no image -> its probably an add or something you do not want in your result
 				search_data.append(data)
 
 		return search_data
@@ -58,9 +59,20 @@ class AllRecipes(object):
 
 		ingredients = soup.findAll("li", {"class": "checkList__line"})
 		steps = soup.findAll("span", {"class": "recipe-directions__list--item"})
+		name = soup.find("h1", {"class": "recipe-summary__h1"}).get_text().replace("®", "")
+
+		direction_data = soup.find("div", {"class": "directions--section__steps"})
+		prep_time = direction_data.find("time", {"itemprop": "prepTime"}).get_text()
+		cook_time = direction_data.find("time", {"itemprop": "cookTime"}).get_text()
+		total_time = direction_data.find("time", {"itemprop": "totalTime"}).get_text()
 
 		data = {"ingredients": [],
-						"steps": []}
+				"steps": [],
+				"name": name,
+				"prep_time": prep_time,
+				"cook_time": cook_time,
+				"total_time": total_time
+				}
 
 		for ingredient in ingredients:
 			str_ing = ingredient.find("span", {"class": "recipe-ingred_txt"}).get_text()
