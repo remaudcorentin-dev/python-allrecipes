@@ -1,5 +1,5 @@
 # python-allrecipes
-##### v0.1.5
+##### v0.1.6
 
 Python API to search &amp; get recipes from the 'allrecipes.com' website (web crawler, unofficial)  
 Useful, efficient and super simple to use.  
