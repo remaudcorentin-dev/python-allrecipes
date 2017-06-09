@@ -63,4 +63,7 @@ for step in detailed_recipe['steps']:  # List of cooking steps
 - Limit the number of returned query on search  
 - More returned data & query options
 
+Related projects :  
+- https://github.com/remaudcorentin-dev/python-marmiton
+
 ###### Support / Contact : remaudcorentin.dev@gmail.com
