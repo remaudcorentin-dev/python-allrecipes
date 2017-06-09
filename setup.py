@@ -3,7 +3,7 @@ from setuptools import setup
 
 setup(
 	name='python-allrecipes',
-	version='0.1.5',
+	version='0.1.6',
 	description='Easy-to-use Python API for the allrecipes.com cokking website.',
 	packages=['allrecipes'],
 	url='https://github.com/remaudcorentin-dev/python-allrecipes',
