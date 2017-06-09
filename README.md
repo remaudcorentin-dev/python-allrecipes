@@ -23,6 +23,9 @@ Useful, efficient and super simple to use.
 ##### AllRecipes.get return a dictionary like :  
 - ingredients: string list of the recipe ingredients (including quantities)  
 - steps: string list of each step of the recipe  
+- prep_time: Estimated preparation time of the recipe (>= 0.1.6)
+- cook_time: Cooking time (>= 0.1.6)
+- total_time: Estimated total time of the recipe (>= 0.1.6)
 
 ### Usage / Example :
 
@@ -53,8 +56,9 @@ for step in detailed_recipe['steps']:  # List of cooking steps
 
 ```
 
-### OnGoing features :  
-- Preparation time, Cooking time, Total time, etc  
+### OnGoing features :  
+- ~~Preparation time, Cooking time, Total time, etc~~ (available in 0.1.6)  
+- Calories counter / Nutritionals apports
 - Multiple images returned for the search / get requests  
 - Limit the number of returned query on search  
 - More returned data & query options
