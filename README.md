@@ -46,7 +46,7 @@ main_recipe_url = query_result[0]['url']
 detailed_recipe = AllRecipes.get(main_recipe_url)  # Get the details of the first returned recipe (most relevant in our case)
 
 # Display result :
-print("## %s :" % query_result[0]['name'])  # Name of the recipe
+print("## %s :" % detailed_recipe['name'])  # Name of the recipe
 
 for ingredient in detailed_recipe['ingredients']:  # List of ingredients
     print("- %s" % ingredient)
