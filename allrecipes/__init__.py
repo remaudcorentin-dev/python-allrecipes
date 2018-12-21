@@ -20,22 +20,26 @@ class AllRecipes(object):
 
 		url = base_url + query_url
 
-		html_content = urllib.request.urlopen(url).read()
+		req = urllib.request.Request(url)
+		req.add_header('Cookie', 'euConsent=true')
+
+		html_content = urllib.request.urlopen(req).read()
+
 		soup = BeautifulSoup(html_content, 'html.parser')
 
 		search_data = []
-		articles = soup.findAll("article", {"class": "grid-col--fixed-tiles"})
+		articles = soup.findAll("article", {"class": "fixed-recipe-card"})
 
 		iterarticles = iter(articles)
 		next(iterarticles)
 		for article in iterarticles:
 			data = {}
 			try:
-				data["name"] = article.find("h3", {"class": "grid-col__h3 grid-col__h3--recipe-grid"}).get_text().strip(' \t\n\r')
-				data["description"] = article.find("div", {"class": "rec-card__description"}).get_text()
-				data["url"] = article.find("a", href=re.compile('^/recipe/'))['href']
+				data["name"] = article.find("h3", {"class": "fixed-recipe-card__h3"}).get_text().strip(' \t\n\r')
+				data["description"] = article.find("div", {"class": "fixed-recipe-card__description"}).get_text().strip(' \t\n\r')
+				data["url"] = article.find("a", href=re.compile('^https://www.allrecipes.com/recipe/'))['href']
 				try:
-					data["image"] = article.find("a", href=re.compile('^/recipe/')).find("img")["data-original-src"]
+					data["image"] = article.find("a", href=re.compile('^https://www.allrecipes.com/recipe/')).find("img")["data-original-src"]
 				except Exception as e1:
 					pass
 			except Exception as e2:
@@ -46,15 +50,18 @@ class AllRecipes(object):
 		return search_data
 
 	@staticmethod
-	def get(uri):
+	def get(url):
 		"""
 		'url' from 'search' method.
 		 ex. "/recipe/106349/beef-and-spinach-curry/"
 		"""
-		base_url = "https://allrecipes.com/"
-		url = base_url + uri
+		#base_url = "https://allrecipes.com/"
+		#url = base_url + uri
 
-		html_content = urllib.request.urlopen(url).read()
+		req = urllib.request.Request(url)
+		req.add_header('Cookie', 'euConsent=true')
+
+		html_content = urllib.request.urlopen(req).read()
 		soup = BeautifulSoup(html_content, 'html.parser')
 
 		ingredients = soup.findAll("li", {"class": "checkList__line"})
