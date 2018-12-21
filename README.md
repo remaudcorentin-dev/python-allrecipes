@@ -1,11 +1,13 @@
 # python-allrecipes
-##### v0.1.6
+##### v0.2.1
+
+###### News : package now up to date on 2018-12-21 to include recent 'allrecipies.com' website html changes + include the 'euConsent' cookie to prevent consent redirection issue.
 
 Python API to search &amp; get recipes from the 'allrecipes.com' website (web crawler, unofficial)  
 Useful, efficient and super simple to use.  
 
 ### Installation :
-`pip install python-allrecipes`  
+`pip install python-allrecipes==0.2.1`  
 
 
 ### Requirements :
