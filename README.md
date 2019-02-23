@@ -21,8 +21,10 @@ Useful, efficient and super simple to use.
 - description: short description of the recipe.  
 - url: url of the detailed recipe on 'allrecipes.com'.  
 - image: if exists, image of the recipe.  
+- rating: average rating given to the recipe (float 0 - 5, `None` if does not exist)
 
 ##### AllRecipes.get return a dictionary like :  
+- rating: average rating given to the recipe (float 0 - 5, `None` if does not exist)
 - ingredients: string list of the recipe ingredients (including quantities)  
 - steps: string list of each step of the recipe  
 - prep_time: Estimated preparation time of the recipe (>= 0.1.6)
