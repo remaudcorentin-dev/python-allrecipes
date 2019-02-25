@@ -42,6 +42,10 @@ class AllRecipes(object):
 					data["image"] = article.find("a", href=re.compile('^https://www.allrecipes.com/recipe/')).find("img")["data-original-src"]
 				except Exception as e1:
 					pass
+				try:
+					data["rating"] = float(article.find("div", {"class": "fixed-recipe-card__ratings"}).find("span")["data-ratingstars"])
+				except ValueError:
+					data["rating"] = None
 			except Exception as e2:
 				pass
 			if data and "image" in data:  # Do not include if no image -> its probably an add or something you do not want in your result
@@ -64,6 +68,10 @@ class AllRecipes(object):
 		html_content = urllib.request.urlopen(req).read()
 		soup = BeautifulSoup(html_content, 'html.parser')
 
+		try:
+			rating = float(soup.find("div", {"class": "rating-stars"})["data-ratingstars"])
+		except ValueError:
+			rating = None
 		ingredients = soup.findAll("li", {"class": "checkList__line"})
 		steps = soup.findAll("span", {"class": "recipe-directions__list--item"})
 		name = soup.find("h1", {"class": "recipe-summary__h1"}).get_text().replace("®", "")
@@ -73,7 +81,9 @@ class AllRecipes(object):
 		cook_time = direction_data.find("time", {"itemprop": "cookTime"}).get_text()
 		total_time = direction_data.find("time", {"itemprop": "totalTime"}).get_text()
 
-		data = {"ingredients": [],
+		data = {
+				"rating": rating,
+				"ingredients": [],
 				"steps": [],
 				"name": name,
 				"prep_time": prep_time,
