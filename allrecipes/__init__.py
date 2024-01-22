@@ -5,138 +5,178 @@ from bs4 import BeautifulSoup
 import urllib.parse
 import urllib.request
 
-import re
 import ssl
-
 
 class AllRecipes(object):
 
-	@staticmethod
-	def search(search_string):
-		"""
-		Search recipes parsing the returned html data.
-		"""
-		base_url = "https://allrecipes.com/search?"
-		query_url = urllib.parse.urlencode({"q": search_string})
+    @staticmethod
+    def fetch_categories(url="https://www.allrecipes.com/recipes/"):
+        """
+        Fetch categories available on Allrecipes.com recipes page. If no URL is provided, this function returns the categories present on the main recipes page.  
 
-		url = base_url + query_url
+        Args:
+                url (str, optional): The URL to the AllRecipes recipes page. Defaults to "https://www.allrecipes.com/recipes/".
 
-		req = urllib.request.Request(url)
-		req.add_header('Cookie', 'euConsent=true')
+        Returns:
+                dict: A dictionary of categories and their corresponding URLs.
+        """
+        req = urllib.request.Request(url)
+        req.add_header('Cookie', 'euConsent=true')
 
-		handler = urllib.request.HTTPSHandler(context=ssl._create_unverified_context())
-		opener = urllib.request.build_opener(handler)
-		response = opener.open(req)
-		html_content = response.read()
+        handler = urllib.request.HTTPSHandler(
+            context=ssl._create_unverified_context())
+        opener = urllib.request.build_opener(handler)
+        response = opener.open(req)
+        html_content = response.read()
 
-		soup = BeautifulSoup(html_content, 'html.parser')
+        soup = BeautifulSoup(html_content, 'html.parser')
 
-		search_data = []
-		articles = soup.findAll("a", {"class": "mntl-card-list-items"})
 
-		articles = [a for a in articles if a["href"].startswith("https://www.allrecipes.com/recipe/")]
+        headers = soup.findAll(
+            "a", {"class": "taxonomy-nodes__link mntl-text-link type--squirrel-link"})
 
-		for article in articles:
-			data = {}
-			try:
-				data["name"] = article.find("span", {"class": "card__title"}).get_text().strip(' \t\n\r')
-				data["url"] = article['href']
-				try:
-					data["rate"] = len(article.find_all("svg", {"class": "icon-star"}))
-					try:
-						if len(article.find_all("svg", {"class": "icon-star-half"})):
-							data["rate"] += 0.5
-					except Exception:
-						pass
-				except Exception as e0:
-					data["rate"] = None
-				try:
-					data["image"] = article.find('img')['data-src']
-				except Exception as e1:
-					try:
-						data["image"] = article.find('img')['src']
-					except Exception as e1:
-						pass
-					if "image" not in data:
-						data["image"] = None
-			except Exception as e2:
-				pass
-			if data:
-				search_data.append(data)
+        if "a-z" in url:
+            headers = soup.findAll("a", {"class": "link-list__link type--dog-bold type--dog-link"})
 
-		return search_data
+        categories = {}
 
-	@staticmethod
-	def _get_name(soup):
-		return soup.find("h1", {"id": "article-heading_2-0"}).get_text().strip(' \t\n\r')
+        for header in headers:
+            categories[header.get_text()] = header["href"]
 
-	@staticmethod
-	def _get_rating(soup):
-		return float(soup.find("div", {"id": "mntl-recipe-review-bar__rating_2-0"}).get_text().strip(' \t\n\r'))
+        return categories
 
-	@staticmethod
-	def _get_ingredients(soup):
-		return [li.get_text().strip(' \t\n\r') for li in soup.find("div", {"id": "mntl-structured-ingredients_1-0"}).find_all("li")]
+    @staticmethod
+    def search(search_string):
+        """
+        Search recipes parsing the returned html data.
+        """
+        base_url = "https://allrecipes.com/search?"
+        query_url = urllib.parse.urlencode({"q": search_string})
 
-	@staticmethod
-	def _get_steps(soup):
-		return [li.get_text().strip(' \t\n\r') for li in soup.find("div", {"id": "recipe__steps_1-0"}).find_all("li")]
+        url = base_url + query_url
 
-	@staticmethod
-	def _get_times_data(soup, text):
-		return soup.find("div", {"id": "recipe-details_1-0"}).find("div", text=text).parent.find("div", {"class": "mntl-recipe-details__value"}).get_text().strip(' \t\n\r')
+        req = urllib.request.Request(url)
+        req.add_header('Cookie', 'euConsent=true')
 
-	@classmethod
-	def _get_prep_time(cls, soup):
-		return cls._get_times_data(soup, "Prep Time:")
+        handler = urllib.request.HTTPSHandler(
+            context=ssl._create_unverified_context())
+        opener = urllib.request.build_opener(handler)
+        response = opener.open(req)
+        html_content = response.read()
 
-	@classmethod
-	def _get_cook_time(cls, soup):
-		return cls._get_times_data(soup, "Cook Time:")
+        soup = BeautifulSoup(html_content, 'html.parser')
 
-	@classmethod
-	def _get_total_time(cls, soup):
-		return cls._get_times_data(soup, "Total Time:")
+        search_data = []
+        articles = soup.findAll("a", {"class": "mntl-card-list-items"})
 
-	@classmethod
-	def _get_nb_servings(cls, soup):
-		return cls._get_times_data(soup, "Servings:")
+        articles = [a for a in articles if a["href"].startswith(
+            "https://www.allrecipes.com/recipe/")]
 
-	@classmethod
-	def get(cls, url):
-		"""
-		'url' from 'search' method.
-		 ex. "/recipe/106349/beef-and-spinach-curry/"
-		"""
-		# base_url = "https://allrecipes.com/"
-		# url = base_url + uri
+        for article in articles:
+            data = {}
+            try:
+                data["name"] = article.find(
+                    "span", {"class": "card__title"}).get_text().strip(' \t\n\r')
+                data["url"] = article['href']
+                try:
+                    data["rate"] = len(article.find_all(
+                        "svg", {"class": "icon-star"}))
+                    try:
+                        if len(article.find_all("svg", {"class": "icon-star-half"})):
+                            data["rate"] += 0.5
+                    except Exception:
+                        pass
+                except Exception as e0:
+                    data["rate"] = None
+                try:
+                    data["image"] = article.find('img')['data-src']
+                except Exception as e1:
+                    try:
+                        data["image"] = article.find('img')['src']
+                    except Exception as e1:
+                        pass
+                    if "image" not in data:
+                        data["image"] = None
+            except Exception as e2:
+                pass
+            if data:
+                search_data.append(data)
 
-		req = urllib.request.Request(url)
-		req.add_header('Cookie', 'euConsent=true')
+        return search_data
 
-		handler = urllib.request.HTTPSHandler(context=ssl._create_unverified_context())
-		opener = urllib.request.build_opener(handler)
-		response = opener.open(req)
-		html_content = response.read()
+    @staticmethod
+    def _get_name(soup):
+        return soup.find("h1", {"id": "article-heading_2-0"}).get_text().strip(' \t\n\r')
 
-		soup = BeautifulSoup(html_content, 'html.parser')
+    @staticmethod
+    def _get_rating(soup):
+        return float(soup.find("div", {"id": "mntl-recipe-review-bar__rating_2-0"}).get_text().strip(' \t\n\r'))
 
-		elements = [
-			{"name": "name", "default_value": ""},
-			{"name": "ingredients", "default_value": []},
-			{"name": "steps", "default_value": []},
-			{"name": "rating", "default_value": None},
-			{"name": "prep_time", "default_value": ""},
-			{"name": "cook_time", "default_value": ""},
-			{"name": "total_time", "default_value": ""},
-			{"name": "nb_servings", "default_value": ""},
-		]
+    @staticmethod
+    def _get_ingredients(soup):
+        return [li.get_text().strip(' \t\n\r') for li in soup.find("div", {"id": "mntl-structured-ingredients_1-0"}).find_all("li")]
 
-		data = {"url": url}
-		for element in elements:
-			try:
-				data[element["name"]] = getattr(cls, "_get_" + element["name"])(soup)
-			except:
-				data[element["name"]] = element["default_value"]
+    @staticmethod
+    def _get_steps(soup):
+        return [li.get_text().strip(' \t\n\r') for li in soup.find("div", {"id": "recipe__steps_1-0"}).find_all("li")]
 
-		return data
+    @staticmethod
+    def _get_times_data(soup, text):
+        return soup.find("div", {"id": "recipe-details_1-0"}).find("div", text=text).parent.find("div", {"class": "mntl-recipe-details__value"}).get_text().strip(' \t\n\r')
+
+    @classmethod
+    def _get_prep_time(cls, soup):
+        return cls._get_times_data(soup, "Prep Time:")
+
+    @classmethod
+    def _get_cook_time(cls, soup):
+        return cls._get_times_data(soup, "Cook Time:")
+
+    @classmethod
+    def _get_total_time(cls, soup):
+        return cls._get_times_data(soup, "Total Time:")
+
+    @classmethod
+    def _get_nb_servings(cls, soup):
+        return cls._get_times_data(soup, "Servings:")
+
+    @classmethod
+    def get(cls, url):
+        """
+        'url' from 'search' method.
+                ex. "/recipe/106349/beef-and-spinach-curry/"
+        """
+        # base_url = "https://allrecipes.com/"
+        # url = base_url + uri
+
+        req = urllib.request.Request(url)
+        req.add_header('Cookie', 'euConsent=true')
+
+        handler = urllib.request.HTTPSHandler(
+            context=ssl._create_unverified_context())
+        opener = urllib.request.build_opener(handler)
+        response = opener.open(req)
+        html_content = response.read()
+
+        soup = BeautifulSoup(html_content, 'html.parser')
+
+        elements = [
+            {"name": "name", "default_value": ""},
+            {"name": "ingredients", "default_value": []},
+            {"name": "steps", "default_value": []},
+            {"name": "rating", "default_value": None},
+            {"name": "prep_time", "default_value": ""},
+            {"name": "cook_time", "default_value": ""},
+            {"name": "total_time", "default_value": ""},
+            {"name": "nb_servings", "default_value": ""},
+        ]
+
+        data = {"url": url}
+        for element in elements:
+            try:
+                data[element["name"]] = getattr(
+                    cls, "_get_" + element["name"])(soup)
+            except:
+                data[element["name"]] = element["default_value"]
+
+        return data
